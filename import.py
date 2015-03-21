@@ -12,6 +12,7 @@ Example usage:
 __author__ = 'Sampo Pyysalo'
 __license__ = 'MIT'
 
+import os
 import sys
 import urllib2
 import codecs
@@ -42,19 +43,10 @@ def pretty(doc):
     """Pretty-print JSON."""
     return json.dumps(doc, sort_keys=True, indent=2, separators=(',', ': '))
 
-def read_dir(source):
-    raise NotImplementedError
-
 def read_file(source):
     with codecs.open(source, encoding=DEFAULT_ENCODING) as f:
         text = f.read()
     return json.loads(text)
-
-def read_source(source):
-    if path.isdir(source):
-        return read_dir(source)
-    else:
-        return read_file(source)
 
 def pretty_response_text(response):
     try:
@@ -85,26 +77,53 @@ def prepare_document_for_POST(document):
         del document['@id']
     return document
 
-def import_from(source, options):
-    """Import data from file or directory source.
+def select_files(directory):
+    """Return list of file or directory names that can be imported."""
+    assert path.isdir(directory)
+    for filename in os.listdir(directory):
+        pathname = path.join(directory, filename)
+        if path.isdir(pathname) or pathname.endswith('.jsonld'):
+            yield pathname
+
+def import_from_dir(directory, options):
+    """Import data from directory.
 
     Return tuple of (success, failure) counts.
     """
+    success, failure = 0, 0
+    for name in select_files(directory):
+        subcount = import_from(name, options)
+        success += subcount[0]
+        failure += subcount[1]
+    return (success, failure)
 
-    headers = {'Content-type': 'application/json'}
+def import_from_file(source, options):
+    """Import data from file.
 
+    Return tuple of (success, failure) counts.
+    """
     count = {
         True: 0,
         False: 0,
     }
-
-    data = read_source(source)
+    headers = {'Content-type': 'application/json'}
+    data = read_file(source)
     for doc in data['@graph']:
         doc = prepare_document_for_POST(doc)
         rep = requests.post(options.url, data=json.dumps(doc), headers=headers)
         status = process_response(doc, rep, options)
         count[status] += 1
     return (count[True], count[False])
+
+def import_from(source, options):
+    """Import data from file or directory source.
+
+    Return tuple of (success, failure) counts.
+    """
+    if path.isdir(source):
+        return import_from_dir(source, options)
+    else:
+        return import_from_file(source, options)
 
 def main(argv):
     args = argparser().parse_args(argv[1:])
