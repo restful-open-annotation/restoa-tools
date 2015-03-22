@@ -28,7 +28,7 @@ import requests
 
 TARGET_KEY = 'target'
 DEFAULT_ANN_URL='http://127.0.0.1:5005/annotations/'
-DEFAULT_DOC_URL=None
+DEFAULT_DOC_URL='http://127.0.0.1:5005/documents/'
 DEFAULT_ENCODING='utf-8'
 
 def argparser():
