@@ -22,5 +22,6 @@ Example: https://www.tagtog.net/-demo?url=http%3A%2F%2Fbeta.evexdb.org%2Foa%2Fdo
 
 **Known issues**:
 * Offsets can be unaligned for PubMedCentral documents
+* Newlines are not respected (that is, all paragraphs are concatenated into one)
 * Relations annotations are not supported yet
 
