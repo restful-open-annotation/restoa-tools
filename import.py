@@ -187,8 +187,7 @@ def post_target(target, target_text, target_map, store):
     try:
         response.raise_for_status()
         target_map[target] = urlparse.urljoin(store, target)
-        # TODO: this isn't really a warning ...
-        warn('POSTed %s to store %s' % (target, store))
+        print 'POSTed %s to store %s' % (target, store)
         return True
     except Exception, e:
         warn('error posting %s: %s' % (target, str(e)))
