@@ -26,7 +26,7 @@ import requests
 
 # logging.basicConfig(level=logging.INFO)
 
-TARGET_KEY = 'hasTarget'
+TARGET_KEY = 'target'
 DEFAULT_ANN_URL='http://127.0.0.1:5005/annotations/'
 DEFAULT_DOC_URL=None
 DEFAULT_ENCODING='utf-8'
