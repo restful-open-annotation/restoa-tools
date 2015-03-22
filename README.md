@@ -3,7 +3,7 @@ Tools for working with RESTful Open Annotations
 
 ## tagtog
 
-[tagtog.net](tagtog.net) is a document visualization and annotation web tool. Example support for OA:
+[tagtog.net](http://tagtog.net) is a document visualization and annotation web tool. Example support for OA:
 
 * visualize document: https://www.tagtog.net/-demo?docid=a7zefU6irg815RNNu7e__WF8vUHO-PMC165443&output=visualize
 * get document annotations in OA / JSON-LD: https://www.tagtog.net/-demo?docid=a7zefU6irg815RNNu7e__WF8vUHO-PMC165443&output=json-ld
