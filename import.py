@@ -6,7 +6,7 @@ Example usage:
 
     python import.py data/examples/craft/12925238.jsonld
 
-(requires a running local RESTful Open Annotation server)
+(requires a RESTful Open Annotation server)
 """
 
 __author__ = 'Sampo Pyysalo'
@@ -265,7 +265,11 @@ def import_from_file(source, options):
         False: 0,
     }
     headers = {'Content-type': 'application/json'}
-    data = read_json_file(source)
+    try:
+        data = read_json_file(source)
+    except Exception, e:
+        print 'Failed to load json from %s: %s' % (source, str(e))
+        return (0, 1)
     dir = os.path.dirname(source)
     for doc in data['@graph']:
         resolve_target_references(doc, dir, options)
